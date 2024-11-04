@@ -14,10 +14,22 @@ class ProductController extends Controller
         return view('product/list');
         
     }
+
+
+
+
+
     // this method will show create product page 
     public function create(){
         return view('product.create');
     }
+
+
+
+
+
+
+
     // this method will store a product on DB
     public function store(Request $request){
         $rules = [
@@ -28,6 +40,12 @@ class ProductController extends Controller
             'price' => 'required|numeric',
 
         ];
+
+        if($request->image != ""){
+            $rules['image'] = 'image';
+        }
+
+
         $validator = validator::make($request->all(),$rules);
 
         if($validator->fails()){
@@ -42,18 +60,53 @@ class ProductController extends Controller
         $product->price = $request->price;
         $product->description = $request->description;
         $product->save();
+        
+
+
+// image work         
+        if($request->image != ""){
+            // here we store image        
+        $image = $request->image;
+        $ext = $image->getClientOriginalExtension();
+        $imageName = time().'.'.$ext; //unique image name
+        
+        // save image in uploads./products directory 
+        $image->move(public_path('uploads/products'), $imageName);
+
+        // save image name in DB 
+        $product->image = $imageName;
+        $product->save();
+        }
+
+
         return redirect()->route('product.index')->with('success','product created successfully');
 
-
     }
+
+
+
+
+
     // this method will show edit product page 
     public function edit(){
 
     }
+
+
+
+
+
+
     // this method will show update product page 
     public function update(){
 
     }
+
+
+
+
+
+    
     // this method will show delete a product 
     public function destroy(){
 

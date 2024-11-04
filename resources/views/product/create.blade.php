@@ -9,6 +9,9 @@
   <body>
     <div class="container mt-5">
       <div class="row justify-content-center">
+        <div class="card-footer text-end">
+          <a href="{{route('product.index')}}" class="btn btn-info">products</a>
+        </div>
         <div class="col-md-6">
           <div class="card">
             <div class="card-header bg-dark text-white">
